@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Checkpoint Games — notícias, hardware, reviews e e-sports.">
+  <title>Checkpoint Games | Seu ponto de encontro gamer</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="announcement">CHECKPOINT GAMES <span>•</span> SEU PONTO DE ENCONTRO GAMER</div>
+  <header class="site-header">
+    <a class="brand" href="#inicio" aria-label="Checkpoint Games - início">
+      <img src="assets/favicon.svg" alt="" width="38" height="38">
+      <span>CHECKPOINT<span class="brand-accent">GAMES</span></span>
+    </a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
+    <nav id="mainNav">
+      <a href="#inicio">Início</a><a href="#hardware">Hardware</a><a href="#reviews">Reviews</a><a href="#esports">E-sports</a><a href="#contato">Contato</a>
+    </nav>
+    <button class="edit-toggle" id="editToggle">✎ Editar site</button>
+  </header>
+
+  <div class="editor-bar" id="editorBar" hidden>
+    <div><strong>Modo de edição ativado</strong><span> Clique nos textos para editar. As alterações ficam salvas neste navegador.</span></div>
+    <div class="editor-actions">
+      <button id="addPost">＋ Novo artigo</button>
+      <button id="exportContent">Exportar conteúdo</button>
+      <label class="import-label">Importar conteúdo<input type="file" id="importContent" accept="application/json"></label>
+      <button class="done-button" id="doneEditing">Concluir edição</button>
+    </div>
+  </div>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-copy">
+        <p class="eyebrow">PLAYER 1 • READY</p>
+        <h1 data-editable="heroTitle">O universo gamer começa <span>aqui.</span></h1>
+        <p class="hero-description" data-editable="heroDescription">Notícias, análises, tecnologia e tudo o que movimenta o mundo dos games. Prepare-se para o próximo nível.</p>
+        <a class="primary-button" href="#reviews">Explorar conteúdo <span>↗</span></a>
+      </div>
+      <div class="hero-art" aria-label="Ilustração gamer">
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="controller">⌁</div><div class="hero-tag tag-top">LEVEL UP</div><div class="hero-tag tag-bottom">GG WP</div>
+      </div>
+      <div class="hero-bottom"><span>01 / 05</span><span>SCROLL PARA DESCOBRIR ↓</span><span>EST. 2026</span></div>
+    </section>
+
+    <section class="intro section-wrap">
+      <div><p class="eyebrow">SOBRE O PROJETO</p><h2 data-editable="introTitle">Mais que jogar.<br><span>Viver games.</span></h2></div>
+      <p data-editable="introText">O Checkpoint Games é um espaço para quem acompanha a cultura gamer. Aqui você encontra conteúdos sobre equipamentos, jogos, competições e novidades do setor, com linguagem direta e visual moderno.</p>
+    </section>
+
+    <section class="content-section section-wrap" id="hardware">
+      <div class="section-heading"><div><p class="eyebrow">PERFORMANCE & TECNOLOGIA</p><h2>Hardware <span>em foco</span></h2></div><p>Conheça os componentes e equipamentos que levam sua gameplay para outro nível.</p></div>
+      <div class="feature-grid">
+        <article class="feature-card large-card"><div class="card-visual visual-gpu"><span>GPU</span><b>RTX</b></div><div class="card-content"><span class="category">GUIA • HARDWARE</span><h3 data-editable="hardwareTitle">Monte um setup à altura do seu jogo</h3><p data-editable="hardwareText">Placas de vídeo, processadores, memória e periféricos: entenda o que realmente faz diferença no desempenho.</p></div></article>
+        <article class="feature-card"><div class="card-visual visual-keyboard"><span>⌨</span></div><div class="card-content"><span class="category">PERIFÉRICOS</span><h3 data-editable="peripheralTitle">O equipamento também faz a diferença</h3><p data-editable="peripheralText">Teclado, mouse, headset e monitor: descubra como escolher seus aliados.</p></div></article>
+      </div>
+    </section>
+
+    <section class="content-section reviews-section" id="reviews">
+      <div class="section-wrap">
+        <div class="section-heading"><div><p class="eyebrow">TESTADOS NO CHECKPOINT</p><h2>Reviews <span>& análises</span></h2></div><p>Opiniões e impressões para ajudar você a escolher sua próxima aventura.</p></div>
+        <div class="post-grid" id="postGrid">
+          <article class="post-card" data-post-id="1"><div class="post-image image-neon"><span>GAME<br>ON</span></div><div class="post-info"><span class="category">ANÁLISE • JOGOS</span><h3 data-editable="post1Title">O que faz um jogo ser inesquecível?</h3><p data-editable="post1Text">Uma boa experiência vai muito além dos gráficos: história, mecânicas e imersão contam.</p><button class="read-more" data-read="1">Ler artigo ↗</button></div></article>
+          <article class="post-card" data-post-id="2"><div class="post-image image-purple"><span>NEW<br>LEVEL</span></div><div class="post-info"><span class="category">TECNOLOGIA</span><h3 data-editable="post2Title">A evolução dos games e da tecnologia</h3><p data-editable="post2Text">Da primeira geração aos mundos atuais, veja como a tecnologia transformou a forma de jogar.</p><button class="read-more" data-read="2">Ler artigo ↗</button></div></article>
+          <article class="post-card" data-post-id="3"><div class="post-image image-orange"><span>GG<br>WP</span></div><div class="post-info"><span class="category">CULTURA GAMER</span><h3 data-editable="post3Title">Comunidade: jogar também é compartilhar</h3><p data-editable="post3Text">Amizades, criatividade e experiências coletivas fazem parte da cultura dos games.</p><button class="read-more" data-read="3">Ler artigo ↗</button></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="esports-section" id="esports">
+      <div class="section-wrap esports-inner">
+        <div><p class="eyebrow">COMPETIÇÃO • ESTRATÉGIA • EMOÇÃO</p><h2>O jogo fica sério<br><span>nos E-sports.</span></h2><p data-editable="esportsText">Os esportes eletrônicos transformaram habilidade, treino e trabalho em equipe em grandes espetáculos. Acompanhe as tendências e histórias desse cenário.</p><a href="#contato" class="text-link">Fale com o Checkpoint ↗</a></div>
+        <div class="esports-graphic"><div class="crosshair">＋</div><strong>GG</strong><span>NEVER<br>STOP PLAYING</span></div>
+      </div>
+    </section>
+
+    <section class="contact-section section-wrap" id="contato">
+      <div><p class="eyebrow">FALE COM A GENTE</p><h2>Vamos conversar<span>?</span></h2><p data-editable="contactText">Tem uma sugestão, uma ideia ou quer compartilhar sua opinião? Envie uma mensagem.</p></div>
+      <form id="contactForm">
+        <label>Seu nome<input name="name" required placeholder="Como podemos chamar você?"></label>
+        <label>Seu e-mail<input name="email" type="email" required placeholder="voce@email.com"></label>
+        <label>Mensagem<textarea name="message" rows="4" required placeholder="Escreva sua mensagem..."></textarea></label>
+        <button class="primary-button" type="submit">Preparar mensagem ↗</button>
+        <small>O botão abre seu aplicativo de e-mail para você enviar a mensagem.</small>
+      </form>
+    </section>
+  </main>
+
+  <footer><a class="brand" href="#inicio"><img src="assets/favicon.svg" alt="" width="30" height="30"><span>CHECKPOINT<span class="brand-accent">GAMES</span></span></a><p>© 2026 Checkpoint Games. Conteúdo feito para quem ama games.</p><a href="#inicio" class="back-top">VOLTAR AO TOPO ↑</a></footer>
+  <dialog id="articleDialog"><button class="dialog-close" id="closeDialog" aria-label="Fechar">×</button><p class="eyebrow">CHECKPOINT GAMES • ARTIGO</p><h2 id="dialogTitle"></h2><p id="dialogText"></p><p class="dialog-note">Edite os títulos e textos pelo botão “Editar site”.</p></dialog>
+  <script src="script.js"></script>
+</body>
+</html>
