@@ -89,3 +89,44 @@ $("#contactForm").addEventListener("submit",e=>{
  location.href=`mailto:projetoivob2@gmail.com?subject=${subject}&body=${body}`;
 });
 applySaved();
+
+
+// Banner rotativo: alterna recomendações automaticamente e permite navegação manual.
+const spotlightGames = [
+ {title:"Cyberpunk 2077",category:"RPG • MUNDO ABERTO",description:"Explore Night City em uma aventura futurista de ação e escolhas, em um mundo marcado por tecnologia e conflitos.",rating:"Classificação indicativa: 18 anos. Contém violência, linguagem imprópria e temas adultos.",url:"https://www.cyberpunk.net/",kicker:"NIGHT CITY • RPG",art:"CYBER<br>PUNK",artClass:"art-cyberpunk",mark:"CG / 01"},
+ {title:"The Witcher 3: Wild Hunt",category:"RPG • FANTASIA",description:"Embarque em uma jornada de fantasia como Geralt de Rívia, explorando um mundo cheio de missões, criaturas e escolhas.",rating:"Jogo com violência e temas maduros. Consulte a classificação indicativa oficial da sua edição e região.",url:"https://www.thewitcher.com/",kicker:"CONTINENTE • FANTASIA",art:"THE<br>WITCHER",artClass:"art-witcher",mark:"CG / 02"},
+ {title:"Forza Horizon 5",category:"CORRIDA • MUNDO ABERTO",description:"Acelere por paisagens inspiradas no México, descubra eventos e personalize sua experiência sobre quatro rodas.",rating:"Consulte a classificação indicativa oficial da sua edição e região antes de jogar.",url:"https://forza.net/",kicker:"HORIZON • RACING",art:"FORZA<br>HORIZON",artClass:"art-forza",mark:"CG / 03"}
+];
+let spotlightIndex=0;
+let spotlightTimer;
+function showSpotlight(index){
+ const game=spotlightGames[index];
+ const art=$("#spotlightArt");
+ if(!art)return;
+ $("#spotlightCategory").textContent=game.category;
+ $("#spotlightTitle").textContent=game.title;
+ $("#spotlightDescription").textContent=game.description;
+ $("#spotlightRating").textContent=game.rating;
+ $("#spotlightLink").href=game.url;
+ $("#spotlightKicker").textContent=game.kicker;
+ $("#spotlightArtTitle").innerHTML=game.art;
+ $(".spotlight-art-mark",art).textContent=game.mark;
+ art.className="spotlight-art "+game.artClass;
+ $("#spotlightCount").textContent=String(index+1).padStart(2,"0")+" / 03";
+ $$("#spotlightDots button").forEach((dot,i)=>dot.classList.toggle("active",i===index));
+ const card=$("#spotlightCard");card.style.animation="none";void card.offsetWidth;card.style.animation="";
+}
+function moveSpotlight(step){
+ spotlightIndex=(spotlightIndex+step+spotlightGames.length)%spotlightGames.length;
+ showSpotlight(spotlightIndex);restartSpotlight();
+}
+function restartSpotlight(){
+ clearInterval(spotlightTimer);
+ spotlightTimer=setInterval(()=>{spotlightIndex=(spotlightIndex+1)%spotlightGames.length;showSpotlight(spotlightIndex);},6000);
+}
+if($("#spotlightCard")){
+ $("#spotlightPrev").addEventListener("click",()=>moveSpotlight(-1));
+ $("#spotlightNext").addEventListener("click",()=>moveSpotlight(1));
+ $$("#spotlightDots button").forEach((dot,i)=>dot.addEventListener("click",()=>{spotlightIndex=i;showSpotlight(i);restartSpotlight();}));
+ showSpotlight(0);restartSpotlight();
+}

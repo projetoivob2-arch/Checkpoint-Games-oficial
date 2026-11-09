@@ -3,21 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Checkpoint Games — notícias, hardware, reviews e e-sports.">
+  <meta name="description" content="Checkpoint Games — notícias, análises, lançamentos, rankings, promoções e recomendações gamer.">
   <title>Checkpoint Games | Seu ponto de encontro gamer</title>
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/checkpoint-icon-32.png?v=2">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/checkpoint-icon-192.png?v=2">
+  <link rel="shortcut icon" href="assets/favicon.ico?v=2">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="announcement">CHECKPOINT GAMES <span>•</span> SEU PONTO DE ENCONTRO GAMER</div>
   <header class="site-header">
     <a class="brand" href="#inicio" aria-label="Checkpoint Games - início">
-      <img src="assets/favicon.svg" alt="" width="38" height="38">
+      <img src="assets/checkpoint-icon-192.png" alt="" width="38" height="38">
       <span>CHECKPOINT<span class="brand-accent">GAMES</span></span>
     </a>
     <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
     <nav id="mainNav">
-      <a href="#inicio">Início</a><a href="#hardware">Hardware</a><a href="#reviews">Reviews</a><a href="#esports">E-sports</a><a href="#contato">Contato</a>
+      <a href="#inicio">Início</a><a href="#noticias">Notícias</a><a href="#lancamentos">Lançamentos</a><a href="#reviews">Reviews</a><a href="#rankings">Rankings</a><a href="#promocoes">Promoções</a><a href="#contato">Opiniões</a>
     </nav>
     <button class="edit-toggle" id="editToggle">✎ Editar site</button>
   </header>
@@ -47,12 +49,69 @@
       <div class="hero-bottom"><span>01 / 05</span><span>SCROLL PARA DESCOBRIR ↓</span><span>EST. 2026</span></div>
     </section>
 
+
+    <section class="game-spotlight" aria-label="Jogos recomendados">
+      <div class="spotlight-inner">
+        <div class="spotlight-heading">
+          <p class="eyebrow">SELEÇÃO CHECKPOINT</p>
+          <h2>Jogo em <span>destaque</span></h2>
+          <p class="spotlight-intro">Descubra uma nova aventura. A cada poucos segundos, um jogo diferente entra em destaque.</p>
+        </div>
+        <div class="spotlight-card" id="spotlightCard" aria-live="polite">
+          <div class="spotlight-art art-cyberpunk" id="spotlightArt">
+            <span class="spotlight-art-kicker" id="spotlightKicker">NIGHT CITY • RPG</span>
+            <strong id="spotlightArtTitle">CYBER<br> PUNK</strong>
+            <span class="spotlight-art-mark">CG / 01</span>
+          </div>
+          <div class="spotlight-copy">
+            <span class="category" id="spotlightCategory">RPG • MUNDO ABERTO</span>
+            <h3 id="spotlightTitle">Cyberpunk 2077</h3>
+            <p id="spotlightDescription">Explore Night City em uma aventura futurista de ação e escolhas, em um mundo marcado por tecnologia e conflitos.</p>
+            <p class="spotlight-rating" id="spotlightRating">Classificação indicativa: 18 anos. Contém violência, linguagem imprópria e temas adultos.</p>
+            <a class="spotlight-link" id="spotlightLink" href="https://www.cyberpunk.net/" target="_blank" rel="noopener noreferrer">Conhecer o jogo ↗</a>
+          </div>
+        </div>
+        <div class="spotlight-controls">
+          <button type="button" id="spotlightPrev" aria-label="Jogo anterior">←</button>
+          <div class="spotlight-dots" id="spotlightDots" aria-label="Selecionar jogo">
+            <button type="button" class="active" aria-label="Jogo 1"></button>
+            <button type="button" aria-label="Jogo 2"></button>
+            <button type="button" aria-label="Jogo 3"></button>
+          </div>
+          <span id="spotlightCount">01 / 03</span>
+          <button type="button" id="spotlightNext" aria-label="Próximo jogo">→</button>
+        </div>
+        <p class="spotlight-disclaimer">As recomendações são informativas. Confira a classificação indicativa e os avisos de conteúdo antes de jogar, especialmente para crianças e adolescentes.</p>
+      </div>
+    </section>
+
     <section class="intro section-wrap">
       <div><p class="eyebrow">SOBRE O PROJETO</p><h2 data-editable="introTitle">Mais que jogar.<br><span>Viver games.</span></h2></div>
       <p data-editable="introText">O Checkpoint Games é um espaço para quem acompanha a cultura gamer. Aqui você encontra conteúdos sobre equipamentos, jogos, competições e novidades do setor, com linguagem direta e visual moderno.</p>
     </section>
 
-    <section class="content-section section-wrap" id="hardware">
+    
+    <section class="portal-section section-wrap" id="noticias">
+      <div class="section-heading"><div><p class="eyebrow">FICA POR DENTRO</p><h2>Radar <span>gamer</span></h2></div><p>Novidades, tendências e assuntos que movimentam o universo dos games.</p></div>
+      <div class="portal-grid">
+        <article class="portal-card news-card"><span class="portal-tag">NOTÍCIAS</span><h3>O que está movimentando o mundo gamer?</h3><p>Acompanhe atualizações, eventos, anúncios e novidades das principais plataformas.</p><span class="portal-note">Conteúdo editorial • Atualize esta área pelo editor do site</span></article>
+        <article class="portal-card tech-card"><span class="portal-tag">TECNOLOGIA</span><h3>Hardware, desempenho e inovação</h3><p>Guias e explicações para entender melhor computadores, consoles e acessórios.</p><span class="portal-note">Guias e dicas</span></article>
+        <article class="portal-card community-card"><span class="portal-tag">COMUNIDADE</span><h3>A cultura gamer além da tela</h3><p>Histórias, campeonatos, criadores e experiências de quem vive os games.</p><span class="portal-note">Cultura gamer</span></article>
+      </div>
+    </section>
+
+    <section class="portal-band" id="lancamentos">
+      <div class="section-wrap">
+        <div class="section-heading"><div><p class="eyebrow">AGENDA CHECKPOINT</p><h2>Fique de olho nos <span>lançamentos</span></h2></div><p>Uma área para destacar jogos que estão chegando. Confira sempre as datas nas páginas oficiais.</p></div>
+        <div class="release-grid">
+          <article class="release-card"><span class="release-symbol">01</span><div><span class="category">AGENDA DE JOGOS</span><h3>Próximos lançamentos</h3><p>Novos títulos e datas para acompanhar em PC e consoles.</p></div></article>
+          <article class="release-card"><span class="release-symbol">02</span><div><span class="category">ATUALIZAÇÕES</span><h3>Expansões e grandes updates</h3><p>Conteúdos extras, temporadas e atualizações importantes.</p></div></article>
+          <article class="release-card"><span class="release-symbol">03</span><div><span class="category">CALENDÁRIO</span><h3>Eventos e showcases</h3><p>Apresentações, feiras e eventos do calendário gamer.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+<section class="content-section section-wrap" id="hardware">
       <div class="section-heading"><div><p class="eyebrow">PERFORMANCE & TECNOLOGIA</p><h2>Hardware <span>em foco</span></h2></div><p>Conheça os componentes e equipamentos que levam sua gameplay para outro nível.</p></div>
       <div class="feature-grid">
         <article class="feature-card large-card"><div class="card-visual visual-gpu"><span>GPU</span><b>RTX</b></div><div class="card-content"><span class="category">GUIA • HARDWARE</span><h3 data-editable="hardwareTitle">Monte um setup à altura do seu jogo</h3><p data-editable="hardwareText">Placas de vídeo, processadores, memória e periféricos: entenda o que realmente faz diferença no desempenho.</p></div></article>
@@ -71,7 +130,25 @@
       </div>
     </section>
 
-    <section class="esports-section" id="esports">
+    
+    <section class="portal-section section-wrap" id="rankings">
+      <div class="section-heading"><div><p class="eyebrow">LISTAS & DESCOBERTAS</p><h2>Ranking <span>Checkpoint</span></h2></div><p>Listas temáticas para descobrir jogos por estilo, plataforma e experiência.</p></div>
+      <div class="ranking-list">
+        <div class="ranking-row"><b>01</b><div><strong>Melhores jogos de mundo aberto</strong><small>Exploração, liberdade e histórias</small></div><span>TOP 10</span></div>
+        <div class="ranking-row"><b>02</b><div><strong>Jogos para jogar com amigos</strong><small>Cooperação, diversão e competição</small></div><span>TOP 10</span></div>
+        <div class="ranking-row"><b>03</b><div><strong>Grandes experiências de RPG</strong><small>Personagens, escolhas e aventura</small></div><span>TOP 10</span></div>
+      </div>
+      <p class="section-footnote">As listas são editoriais e podem mudar conforme novas análises e critérios de avaliação.</p>
+    </section>
+
+    <section class="portal-band" id="promocoes">
+      <div class="section-wrap promo-inner">
+        <div><p class="eyebrow">SEU PRÓXIMO GAME PODE ESTAR EM OFERTA</p><h2>Radar de <span>promoções</span></h2><p>Espaço para divulgar jogos gratuitos, descontos e ofertas. Confira preço, plataforma, região e validade diretamente na loja antes de comprar.</p></div>
+        <div class="promo-stamp"><strong>DEAL</strong><span>ALERTA DE OFERTA</span><small>Confira antes que acabe</small></div>
+      </div>
+    </section>
+
+<section class="esports-section" id="esports">
       <div class="section-wrap esports-inner">
         <div><p class="eyebrow">COMPETIÇÃO • ESTRATÉGIA • EMOÇÃO</p><h2>O jogo fica sério<br><span>nos E-sports.</span></h2><p data-editable="esportsText">Os esportes eletrônicos transformaram habilidade, treino e trabalho em equipe em grandes espetáculos. Acompanhe as tendências e histórias desse cenário.</p><a href="#contato" class="text-link">Fale com o Checkpoint ↗</a></div>
         <div class="esports-graphic"><div class="crosshair">＋</div><strong>GG</strong><span>NEVER<br>STOP PLAYING</span></div>
@@ -79,18 +156,18 @@
     </section>
 
     <section class="contact-section section-wrap" id="contato">
-      <div><p class="eyebrow">FALE COM A GENTE</p><h2>Vamos conversar<span>?</span></h2><p data-editable="contactText">Tem uma sugestão, uma ideia ou quer compartilhar sua opinião? Envie uma mensagem.</p></div>
+      <div><p class="eyebrow">SUA VOZ NO CHECKPOINT</p><h2>Envie sua <span>opinião</span></h2><p>Quer sugerir um jogo, comentar uma análise ou dar uma ideia para o site? Envie sua opinião. A mensagem será recebida pela equipe e analisada antes de qualquer publicação.</p><p class="feedback-privacy">Não existe área de comentários públicos. Sua mensagem não aparece automaticamente no site.</p></div>
       <form id="contactForm">
-        <label>Seu nome<input name="name" required placeholder="Como podemos chamar você?"></label>
-        <label>Seu e-mail<input name="email" type="email" required placeholder="voce@email.com"></label>
-        <label>Mensagem<textarea name="message" rows="4" required placeholder="Escreva sua mensagem..."></textarea></label>
-        <button class="primary-button" type="submit">Preparar mensagem ↗</button>
-        <small>O botão abre seu aplicativo de e-mail para você enviar a mensagem.</small>
+        <label>Seu nome<input name="name" required maxlength="80" placeholder="Como podemos chamar você?"></label>
+        <label>Seu e-mail<input name="email" type="email" required maxlength="120" placeholder="voce@email.com"></label>
+        <label>Sua opinião<textarea name="message" rows="5" required maxlength="3000" placeholder="Escreva sua opinião ou sugestão..."></textarea></label>
+        <button class="primary-button" type="submit">Enviar opinião ↗</button>
+        <small>Ao enviar, seu aplicativo de e-mail será aberto com a mensagem pronta para envio.</small>
       </form>
     </section>
   </main>
 
-  <footer><a class="brand" href="#inicio"><img src="assets/favicon.svg" alt="" width="30" height="30"><span>CHECKPOINT<span class="brand-accent">GAMES</span></span></a><p>© 2026 Checkpoint Games. Conteúdo feito para quem ama games.</p><a href="#inicio" class="back-top">VOLTAR AO TOPO ↑</a></footer>
+  <footer><a class="brand" href="#inicio"><img src="assets/checkpoint-icon-192.png" alt="" width="30" height="30"><span>CHECKPOINT<span class="brand-accent">GAMES</span></span></a><p>© 2026 Checkpoint Games. Conteúdo feito para quem ama games.</p><a href="#inicio" class="back-top">VOLTAR AO TOPO ↑</a></footer>
   <dialog id="articleDialog">
     <button class="dialog-close" id="closeDialog" aria-label="Fechar">×</button>
     <p class="eyebrow" id="dialogCategory">CHECKPOINT GAMES • ARTIGO</p>

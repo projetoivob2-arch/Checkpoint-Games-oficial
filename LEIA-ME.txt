@@ -1,0 +1,22 @@
+CHECKPOINT GAMES — VERSÃO COMPLETA
+
+COMO PUBLICAR:
+1. Faça uma cópia de segurança dos arquivos atuais do site.
+2. Extraia este ZIP no computador.
+3. Abra a pasta checkpoint_games_pro.
+4. Envie TODOS os arquivos e a pasta assets para a hospedagem, substituindo os antigos.
+5. Confirme que index.html, style.css, script.js e a pasta assets ficaram juntos no mesmo local.
+6. Abra o site e atualize com Ctrl + F5 para carregar o novo visual e o favicon.
+
+O QUE FOI INCLUÍDO:
+- Banner rotativo com três jogos recomendados.
+- Áreas de notícias, lançamentos, rankings e promoções.
+- Seções de hardware, reviews e e-sports mantidas.
+- Formulário para enviar opiniões ao e-mail projetoivob2@gmail.com.
+- Favicon novo em PNG, SVG e ICO.
+
+IMPORTANTE:
+- O formulário abre o aplicativo de e-mail do visitante com a mensagem pronta. O visitante precisa confirmar o envio.
+- O site é estático. Notícias, calendário, rankings e promoções precisam ser atualizados pelo responsável; não são alimentados automaticamente.
+- O editor do site salva alterações no navegador usado para editar. Para que todos vejam mudanças, publique os arquivos atualizados na hospedagem.
+- As mensagens enviadas não aparecem publicamente no site.
