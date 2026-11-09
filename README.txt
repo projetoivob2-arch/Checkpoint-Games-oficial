@@ -1,15 +1,15 @@
-CHECKPOINT GAMES — COMO USAR
+CHECKPOINT GAMES — VERSÃO COM ARTIGOS COMPLETOS
 
-1. Extraia a pasta checkpoint_games.
-2. Abra o arquivo index.html no navegador para visualizar o site.
-3. Clique em “Editar site” no topo.
-4. Clique nos textos com contorno para alterar. Nos artigos, você pode excluir, criar um novo e clicar na imagem para escolher outra.
-5. Clique em “Concluir edição” para salvar.
+Esta versão corrige o botão “Ler artigo”: cada artigo abre uma janela de leitura com o conteúdo completo, dividido em seções.
 
-IMPORTANTE SOBRE A EDIÇÃO:
-- As alterações são salvas no armazenamento local do navegador (neste computador e neste navegador).
-- Isso facilita editar o conteúdo sem mexer no código, mas NÃO publica automaticamente as alterações para todos os visitantes do site.
-- Para atualizar a versão pública, é necessário exportar o conteúdo e aplicar/publicar a atualização no serviço de hospedagem. O botão “Exportar conteúdo” cria um arquivo JSON de backup; “Importar conteúdo” recupera esse conteúdo neste navegador.
-- O formulário de contato abre o aplicativo de e-mail com uma mensagem preparada para projetoivob2@gmail.com.
+INSTALAÇÃO:
+1. Extraia checkpoint_games_pro.zip.
+2. Abra index.html para testar.
+3. Para substituir sua versão anterior publicada, envie os arquivos desta pasta para sua hospedagem, substituindo os antigos.
+4. Clique em “Editar site” para editar textos, criar/excluir artigos e trocar imagens.
+5. Para importar o pacote de artigos, use o botão “Importar conteúdo” e escolha conteudo_checkpoint_games_artigos_completos.json.
 
-O site é estático e pode ser publicado em hospedagem de páginas estáticas, como GitHub Pages ou Netlify.
+IMPORTANTE:
+- O site guarda edições no navegador local. Isso não sincroniza alterações com outros visitantes nem atualiza sozinho a hospedagem.
+- Para publicar as mudanças, é necessário enviar os arquivos atualizados à hospedagem.
+- O conteúdo de artigos completos é preservado no arquivo JSON ao exportar/importar.
