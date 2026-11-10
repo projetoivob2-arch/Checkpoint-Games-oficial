@@ -131,22 +131,26 @@ const spotlightGames = [
 ];
 let spotlightIndex=0;
 let spotlightTimer;
+let spotlightMediaTimer;
+let spotlightShowingVideo=false;
+function youtubePlayerUrl(value){try{const u=new URL(value);let id="";if(u.hostname.includes("youtu.be"))id=u.pathname.slice(1);else if(u.hostname.includes("youtube.com")||u.hostname.includes("youtube-nocookie.com")){id=u.searchParams.get("v")||u.pathname.split("/").filter(Boolean).pop();}if(!/^[A-Za-z0-9_-]{11}$/.test(id))return null;return `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=1&controls=1&rel=0&playsinline=1&loop=1&playlist=${id}`;}catch{return null;}}
+function renderSpotlightMedia(){const game=spotlightGames[spotlightIndex];const image=$("#spotlightImage");const video=$("#spotlightVideo");const hasImage=!!game.imageUrl;const videoUrl=game.videoUrl?youtubePlayerUrl(game.videoUrl):null;const hasVideo=!!videoUrl;let useVideo=spotlightShowingVideo&&hasVideo;if(!hasImage&&hasVideo)useVideo=true;if(!hasVideo&&hasImage)useVideo=false;if(useVideo){image.hidden=true;image.removeAttribute("src");video.hidden=false;const current=video.getAttribute("src");if(current!==videoUrl)video.src=videoUrl;}else{video.hidden=true;video.removeAttribute("src");if(hasImage){image.src=game.imageUrl;image.hidden=false;}else{image.hidden=true;image.removeAttribute("src");}}}
 function showSpotlight(index){
  const game=spotlightGames[index];
  const art=$("#spotlightArt");
  if(!art)return;
  const gameImage=$("#spotlightImage");
- if(game.imageUrl){gameImage.src=game.imageUrl;gameImage.hidden=false;art.classList.add("has-game-image");}else{gameImage.removeAttribute("src");gameImage.hidden=true;art.classList.remove("has-game-image");}
+ renderSpotlightMedia();
+ if(game.imageUrl||game.videoUrl){art.classList.add("has-game-image");}else{art.classList.remove("has-game-image");}
  $("#spotlightCategory").textContent=game.category;
  $("#spotlightTitle").textContent=game.title;
  $("#spotlightDescription").textContent=game.description;
  $("#spotlightRating").textContent=game.rating;
  $("#spotlightLink").href=game.url;
- const videoLink=$("#spotlightVideoLink");if(videoLink){videoLink.hidden=!game.videoUrl;videoLink.href=game.videoUrl||"#";}
  $("#spotlightKicker").textContent=game.kicker;
  $("#spotlightArtTitle").innerHTML=game.art;
  $(".spotlight-art-mark",art).textContent=game.mark;
- art.className="spotlight-art "+game.artClass;
+ art.className="spotlight-art "+game.artClass;if(game.imageUrl||game.videoUrl)art.classList.add("has-game-image");
  $("#spotlightCount").textContent=String(index+1).padStart(2,"0")+" / 03";
  $$("#spotlightDots button").forEach((dot,i)=>dot.classList.toggle("active",i===index));
  const card=$("#spotlightCard");card.style.animation="none";void card.offsetWidth;card.style.animation="";
@@ -156,8 +160,9 @@ function moveSpotlight(step){
  showSpotlight(spotlightIndex);restartSpotlight();
 }
 function restartSpotlight(){
- clearInterval(spotlightTimer);
- spotlightTimer=setInterval(()=>{spotlightIndex=(spotlightIndex+1)%spotlightGames.length;showSpotlight(spotlightIndex);},6000);
+ clearInterval(spotlightTimer);clearInterval(spotlightMediaTimer);spotlightShowingVideo=false;renderSpotlightMedia();
+ spotlightMediaTimer=setInterval(()=>{const game=spotlightGames[spotlightIndex];if(game.imageUrl&&game.videoUrl){spotlightShowingVideo=!spotlightShowingVideo;renderSpotlightMedia();}},6000);
+ spotlightTimer=setInterval(()=>{spotlightIndex=(spotlightIndex+1)%spotlightGames.length;spotlightShowingVideo=false;showSpotlight(spotlightIndex);},12000);
 }
 if($("#spotlightCard")){
  $("#spotlightPrev").addEventListener("click",()=>moveSpotlight(-1));

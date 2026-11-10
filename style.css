@@ -90,3 +90,9 @@ dialog h2{padding-right:25px;margin-top:10px}
 .footer-actions{display:flex;gap:18px;align-items:center}.admin-link{border:0;background:none;color:#9aa5b9;font-size:10px;letter-spacing:1px;cursor:pointer}.admin-link:hover{color:#c7ff3d}
 .spotlight-art{position:relative;overflow:hidden}.spotlight-game-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}.spotlight-art.has-game-image:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#090d18a8,#090d1820);z-index:1}.spotlight-art>*:not(img){position:relative;z-index:2}.spotlight-art.has-game-image #spotlightArtTitle{display:none}
 .admin-dialog{width:min(520px,calc(100% - 28px));border:1px solid #3a465d;background:#111622;color:#f4f6fb;padding:34px;border-radius:8px}.admin-dialog::backdrop{background:#03050bd9;backdrop-filter:blur(5px)}.admin-dialog h2{font-family:'Barlow Condensed',sans-serif;font-size:38px;text-transform:uppercase;margin:8px 0 24px}.admin-dialog h2 span{color:#c7ff3d}.admin-form label{display:block;font-size:11px;color:#cbd3df;margin:14px 0}.admin-form input{display:block;width:100%;margin-top:7px;padding:13px;background:#090d16;border:1px solid #39445a;color:white}.admin-actions{display:grid;gap:10px}.admin-actions button{padding:12px;background:#1a2232;border:1px solid #46536b;color:#f4f6fb;text-align:left;cursor:pointer}.admin-actions button:hover{border-color:#c7ff3d}.admin-help,#adminStatus{font-size:11px;color:#aab4c7;line-height:1.6}.admin-form[hidden],#adminTools[hidden]{display:none}
+
+/* Mídia do jogo em destaque: imagem e trailer incorporado no próprio banner */
+.spotlight-game-video{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:1;background:#05070c;}
+.spotlight-art.has-game-image #spotlightArtTitle{display:none}
+.spotlight-art.has-game-image .spotlight-art-kicker,.spotlight-art.has-game-image .spotlight-art-mark{z-index:3}
+.spotlight-game-image{z-index:1}
