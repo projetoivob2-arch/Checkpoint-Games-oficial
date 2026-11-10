@@ -1,0 +1,33 @@
+CHECKPOINT GAMES — NOVOS RECURSOS
+
+Esta atualização adiciona blocos públicos para:
+- Jogo da semana (marque is_week=true no cadastro do jogo; idealmente apenas um jogo por vez)
+- Calendário de lançamentos
+- Reviews com nota de 0 a 10
+- Galeria de imagens e vídeos do YouTube por jogo
+- Enquete e votação
+- Radar de promoções
+- Comparador de jogos
+- Busca, filtros de plataforma e favoritos locais
+- Lista de artigos mais lidos (contador demonstrativo no navegador desta versão)
+
+INSTALAÇÃO
+1. Faça backup do repositório atual.
+2. Extraia este ZIP e envie os arquivos mantendo a pasta checkpoint_games_pro.
+3. No Supabase, abra SQL Editor, cole TODO o conteúdo atualizado de supabase-setup.sql e execute.
+4. Aguarde o GitHub Pages publicar a nova versão.
+
+CADASTRO DOS CONTEÚDOS
+Nesta versão os módulos exibem dados das tabelas cg_games, cg_releases, cg_reviews, cg_media, cg_deals, cg_polls e cg_poll_options. Cadastros podem ser feitos no Supabase Table Editor com a conta administrativa. A interface de cadastro direto no painel do site (incluindo upload de mídia vinculado ao jogo) ainda precisa de uma etapa própria; não confunda os formulários de votação com um painel de publicação.
+
+VÍDEOS
+Use links de vídeos públicos do YouTube. O site converte links youtube.com/watch, youtu.be e /shorts para incorporação. Não baixe nem reenvie vídeos de terceiros sem autorização.
+
+FAVORITOS
+Ficam salvos apenas no navegador do visitante (localStorage), não em conta pessoal.
+
+ARTIGOS MAIS LIDOS
+A contagem atual é local/demonstrativa e não representa audiência global. Para métricas reais, será necessário registrar visualizações em uma tabela com proteção contra abuso.
+
+SEGURANÇA
+A publishable key do Supabase pode estar no frontend. Nunca publique service_role. A autenticação do admin deve ser criada no Supabase Auth; não coloque senhas em arquivos do site.
