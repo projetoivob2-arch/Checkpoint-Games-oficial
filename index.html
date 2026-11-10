@@ -5,23 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Checkpoint Games — notícias, análises, lançamentos, rankings, promoções e recomendações gamer.">
   <title>Checkpoint Games | Seu ponto de encontro gamer</title>
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/checkpoint-icon-32.png?v=2">
-  <link rel="icon" type="image/png" sizes="192x192" href="assets/checkpoint-icon-192.png?v=2">
-  <link rel="shortcut icon" href="assets/favicon.ico?v=2">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/checkpoint-icon-32.png?v=3">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/checkpoint-icon-192.png?v=3">
+  <link rel="shortcut icon" href="assets/favicon.ico?v=3">
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
   <div class="announcement">CHECKPOINT GAMES <span>•</span> SEU PONTO DE ENCONTRO GAMER</div>
   <header class="site-header">
     <a class="brand" href="#inicio" aria-label="Checkpoint Games - início">
-      <img src="assets/checkpoint-icon-192.png" alt="" width="38" height="38">
+      <span class="brand-mark" aria-hidden="true">C<span>G</span></span>
       <span>CHECKPOINT<span class="brand-accent">GAMES</span></span>
     </a>
     <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
     <nav id="mainNav">
       <a href="#inicio">Início</a><a href="#noticias">Notícias</a><a href="#lancamentos">Lançamentos</a><a href="#reviews">Reviews</a><a href="#rankings">Rankings</a><a href="#promocoes">Promoções</a><a href="#contato">Opiniões</a>
     </nav>
-    <button class="edit-toggle" id="editToggle">✎ Editar site</button>
+
   </header>
 
   <div class="editor-bar" id="editorBar" hidden>
@@ -59,6 +60,7 @@
         </div>
         <div class="spotlight-card" id="spotlightCard" aria-live="polite">
           <div class="spotlight-art art-cyberpunk" id="spotlightArt">
+            <img id="spotlightImage" class="spotlight-game-image" alt="Imagem do jogo em destaque" hidden>
             <span class="spotlight-art-kicker" id="spotlightKicker">NIGHT CITY • RPG</span>
             <strong id="spotlightArtTitle">CYBER<br> PUNK</strong>
             <span class="spotlight-art-mark">CG / 01</span>
@@ -167,7 +169,21 @@
     </section>
   </main>
 
-  <footer><a class="brand" href="#inicio"><img src="assets/checkpoint-icon-192.png" alt="" width="30" height="30"><span>CHECKPOINT<span class="brand-accent">GAMES</span></span></a><p>© 2026 Checkpoint Games. Conteúdo feito para quem ama games.</p><a href="#inicio" class="back-top">VOLTAR AO TOPO ↑</a></footer>
+  <footer><a class="brand" href="#inicio"><span class="brand-mark brand-mark-small" aria-hidden="true">C<span>G</span></span><span>CHECKPOINT<span class="brand-accent">GAMES</span></span></a><p>© 2026 Checkpoint Games. Conteúdo feito para quem ama games.</p><div class="footer-actions"><button id="adminOpen" class="admin-link" type="button">Área administrativa</button><a href="#inicio" class="back-top">VOLTAR AO TOPO ↑</a></div></footer>
+  <dialog id="adminDialog" class="admin-dialog">
+    <button class="dialog-close" id="adminClose" aria-label="Fechar">×</button>
+    <p class="eyebrow">ACESSO RESTRITO</p><h2>Administração <span>Checkpoint</span></h2>
+    <form id="adminLoginForm" class="admin-form">
+      <label>E-mail<input id="adminEmail" type="email" autocomplete="username" required placeholder="seu e-mail"></label>
+      <label>Senha<input id="adminPassword" type="password" autocomplete="current-password" required placeholder="Sua senha"></label>
+      <button class="primary-button" type="submit">Entrar</button><p id="adminStatus" role="status"></p>
+    </form>
+    <div id="adminTools" hidden>
+      <p>Você está autenticado. As alterações serão sincronizadas com o site publicado.</p>
+      <div class="admin-actions"><button type="button" id="adminEdit">Ativar editor de textos</button><button type="button" id="uploadSpotlight">Adicionar/trocar imagem do jogo em destaque</button><button type="button" id="adminLogout">Sair</button></div>
+      <p class="admin-help">Para trocar a imagem do jogo, avance até ele no banner e use o botão de imagem. Artigos também aceitam imagens pelo editor.</p>
+    </div>
+  </dialog>
   <dialog id="articleDialog">
     <button class="dialog-close" id="closeDialog" aria-label="Fechar">×</button>
     <p class="eyebrow" id="dialogCategory">CHECKPOINT GAMES • ARTIGO</p>

@@ -9,7 +9,10 @@ function snapshot(){
  const content={}; $$("[data-editable]").forEach(el=>content[el.dataset.editable]=el.innerHTML);
  return {content,posts};
 }
-function save(){ try{localStorage.setItem(storageKey, JSON.stringify(snapshot()));}catch(e){alert("Não foi possível salvar. Talvez a imagem seja muito grande.");} }
+let remoteSaveTimer;
+function save(){ try{localStorage.setItem(storageKey, JSON.stringify(snapshot()));}catch(e){alert("Não foi possível salvar. Use imagens menores.");}
+ if(window.cgSupabase && window.cgAdminSession){clearTimeout(remoteSaveTimer);remoteSaveTimer=setTimeout(async()=>{const {error}=await window.cgSupabase.from("site_content").upsert({id:1,payload:snapshot(),updated_at:new Date().toISOString()});if(error)console.error("Falha ao sincronizar conteúdo",error);},700);}
+}
 function applySaved(){
  try{
   const data=JSON.parse(localStorage.getItem(storageKey)||"null"); if(!data)return;
@@ -22,7 +25,7 @@ function renderPosts(){
  posts.forEach(post=>{
   const article=document.createElement("article"); article.className="post-card"; article.dataset.postId=post.id;
   const visual=document.createElement("div"); visual.className=`post-image image-${post.image||"neon"}`;
-  if(post.imageData){visual.style.backgroundImage=`linear-gradient(#0002,#0002),url("${post.imageData}")`;visual.style.backgroundSize="cover";visual.style.backgroundPosition="center";}
+  if(post.imageUrl||post.imageData){visual.style.backgroundImage=`linear-gradient(#0002,#0002),url("${post.imageUrl||post.imageData}")`;visual.style.backgroundSize="cover";visual.style.backgroundPosition="center";}
   const stamp=document.createElement("span");stamp.textContent="GAME\nON";visual.append(stamp);
   const info=document.createElement("div");info.className="post-info";
   const category=document.createElement("span");category.className="category";category.textContent=post.category||"ARTIGO";
@@ -52,7 +55,7 @@ function openArticle(post){
 }
 function choosePostImage(id){
  const picker=document.createElement("input");picker.type="file";picker.accept="image/*";
- picker.onchange=()=>{const file=picker.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{const p=posts.find(x=>x.id===id);p.imageData=reader.result;renderPosts();save();};reader.readAsDataURL(file);};picker.click();
+ picker.onchange=async()=>{const file=picker.files[0];if(!file)return;const post=posts.find(x=>x.id===id);if(window.cgSupabase&&window.cgAdminSession){const path=`posts/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g,"_")}`;const {error}=await window.cgSupabase.storage.from("site-images").upload(path,file,{upsert:true});if(error){alert("Falha ao enviar imagem. Confira o bucket e as permissões no Supabase.");return;}post.imageUrl=window.cgSupabase.storage.from("site-images").getPublicUrl(path).data.publicUrl;post.imageData=null;}else{alert("Entre na área administrativa para enviar imagens.");return;}renderPosts();save();};picker.click();
 }
 function setEditing(value){
  editing=value;document.body.classList.toggle("editing",editing);editorBar.hidden=!editing;
@@ -60,8 +63,8 @@ function setEditing(value){
  $$("[data-editable]").forEach(el=>{el.contentEditable=editing?"true":"false";el.spellcheck=editing;});
  renderPosts();
 }
-editToggle.addEventListener("click",()=>setEditing(!editing));
-$("#doneEditing").addEventListener("click",()=>{save();setEditing(false);alert("Alterações salvas neste navegador!");});
+
+$("#doneEditing").addEventListener("click",()=>{save();setEditing(false);alert("Alterações sincronizadas quando houver conexão com o Supabase.");});
 document.addEventListener("input",e=>{if(editing&&e.target.matches("[data-editable]"))save();});
 $("#addPost").addEventListener("click",()=>{
  const title=prompt("Título do novo artigo:");if(!title)return;
@@ -82,12 +85,39 @@ $("#closeDialog").addEventListener("click",()=>$("#articleDialog").close());
 $("#articleDialog").addEventListener("click",e=>{if(e.target===$("#articleDialog"))$("#articleDialog").close();});
 $("#menuToggle").addEventListener("click",()=>$("#mainNav").classList.toggle("open"));
 $$("nav a").forEach(a=>a.addEventListener("click",()=>$("#mainNav").classList.remove("open")));
-$("#contactForm").addEventListener("submit",e=>{
+$("#contactForm").addEventListener("submit",async e=>{
  e.preventDefault();const data=new FormData(e.currentTarget);
- const subject=encodeURIComponent("Mensagem pelo site Checkpoint Games");
- const body=encodeURIComponent(`Nome: ${data.get("name")}\nE-mail: ${data.get("email")}\n\nMensagem:\n${data.get("message")}`);
- location.href=`mailto:projetoivob2@gmail.com?subject=${subject}&body=${body}`;
+ const payload={name:String(data.get("name")),email:String(data.get("email")),message:String(data.get("message"))};
+ if(!window.cgSupabase){alert("O formulário ainda precisa da configuração do Supabase.");return;}
+ const {error}=await window.cgSupabase.from("opinions").insert(payload);
+ if(error){console.error(error);alert("Não foi possível enviar agora. Tente novamente mais tarde.");return;}
+ alert("Opinião enviada! Obrigado por contribuir com o Checkpoint Games.");e.currentTarget.reset();
 });
+// Integração segura com Supabase: credenciais públicas; autorização real via Auth + RLS.
+const SUPABASE_URL = "https://kpsyqmilwburtamrdqbg.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Vg3JNwU_Qrek84lPFPA09Q_PHyqgqoP";
+const ADMIN_EMAIL = "ivonobre90215@gmail.com";
+window.cgSupabase = window.supabase?.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+window.cgAdminSession = null;
+const adminDialog=$("#adminDialog"), adminStatus=$("#adminStatus");
+$("#adminOpen").addEventListener("click",()=>adminDialog.showModal());
+$("#adminClose").addEventListener("click",()=>adminDialog.close());
+$("#adminLoginForm").addEventListener("submit",async e=>{e.preventDefault();adminStatus.textContent="Verificando acesso...";const email=$("#adminEmail").value.trim().toLowerCase(),password=$("#adminPassword").value;
+ if(email!==ADMIN_EMAIL){adminStatus.textContent="E-mail não autorizado.";return;}
+ const {data,error}=await window.cgSupabase.auth.signInWithPassword({email,password});
+ if(error){adminStatus.textContent="Não foi possível entrar. Confira o e-mail e a senha cadastrados no Supabase Auth.";return;}
+ window.cgAdminSession=data.session;$("#adminLoginForm").hidden=true;$("#adminTools").hidden=false;adminStatus.textContent="Acesso autorizado.";
+ await loadRemoteContent();
+});
+async function loadRemoteContent(){const {data,error}=await window.cgSupabase.from("site_content").select("payload").eq("id",1).maybeSingle();if(!error&&data?.payload){const payload=data.payload;if(payload.content)Object.entries(payload.content).forEach(([k,v])=>{const el=$(`[data-editable="${CSS.escape(k)}"]`);if(el)el.innerHTML=v;});if(Array.isArray(payload.posts)){posts=payload.posts;renderPosts();}}
+ const {data:games}=await window.cgSupabase.from("spotlight_games").select("game_index,image_url").order("game_index");if(games)games.forEach(row=>{if(spotlightGames[row.game_index])spotlightGames[row.game_index].imageUrl=row.image_url;});showSpotlight(spotlightIndex);
+}
+$("#adminEdit").addEventListener("click",()=>{setEditing(!editing);adminDialog.close();});
+$("#adminLogout").addEventListener("click",async()=>{await window.cgSupabase.auth.signOut();window.cgAdminSession=null;setEditing(false);$("#adminLoginForm").hidden=false;$("#adminTools").hidden=true;$("#adminPassword").value="";adminStatus.textContent="Sessão encerrada.";});
+$("#uploadSpotlight").addEventListener("click",()=>{const picker=document.createElement("input");picker.type="file";picker.accept="image/*";picker.onchange=async()=>{const file=picker.files[0];if(!file)return;const path=`spotlight/${spotlightIndex}-${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g,"_")}`;const {error}=await window.cgSupabase.storage.from("site-images").upload(path,file,{upsert:true});if(error){alert("Falha no envio. Verifique o bucket site-images.");return;}const url=window.cgSupabase.storage.from("site-images").getPublicUrl(path).data.publicUrl;const {error:dbError}=await window.cgSupabase.from("spotlight_games").upsert({game_index:spotlightIndex,image_url:url});if(dbError){alert("Imagem enviada, mas não foi possível salvar a referência no banco.");return;}spotlightGames[spotlightIndex].imageUrl=url;showSpotlight(spotlightIndex);alert("Imagem do jogo atualizada!");};picker.click();adminDialog.close();});
+async function loadPublicContent(){if(!window.cgSupabase)return;const {data}=await window.cgSupabase.from("site_content").select("payload").eq("id",1).maybeSingle();if(data?.payload){const payload=data.payload;if(payload.content)Object.entries(payload.content).forEach(([k,v])=>{const el=$(`[data-editable="${CSS.escape(k)}"]`);if(el)el.innerHTML=v;});if(Array.isArray(payload.posts)){posts=payload.posts;renderPosts();}}const {data:games}=await window.cgSupabase.from("spotlight_games").select("game_index,image_url").order("game_index");if(games)games.forEach(row=>{if(spotlightGames[row.game_index])spotlightGames[row.game_index].imageUrl=row.image_url;});showSpotlight(spotlightIndex);}
+(async()=>{if(!window.cgSupabase)return;await loadPublicContent();const {data}=await window.cgSupabase.auth.getSession();if(data?.session?.user?.email?.toLowerCase()===ADMIN_EMAIL){window.cgAdminSession=data.session;await loadRemoteContent();}})();
+
 applySaved();
 
 
@@ -103,6 +133,8 @@ function showSpotlight(index){
  const game=spotlightGames[index];
  const art=$("#spotlightArt");
  if(!art)return;
+ const gameImage=$("#spotlightImage");
+ if(game.imageUrl){gameImage.src=game.imageUrl;gameImage.hidden=false;art.classList.add("has-game-image");}else{gameImage.removeAttribute("src");gameImage.hidden=true;art.classList.remove("has-game-image");}
  $("#spotlightCategory").textContent=game.category;
  $("#spotlightTitle").textContent=game.title;
  $("#spotlightDescription").textContent=game.description;

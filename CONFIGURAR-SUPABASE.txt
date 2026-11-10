@@ -1,0 +1,23 @@
+CHECKPOINT GAMES — CONFIGURAÇÃO DO SUPABASE
+
+1) No Supabase, abra Authentication > Users > Add user.
+2) Cadastre ivonobre90215@gmail.com e defina uma NOVA senha forte. Não reutilize a senha que foi escrita no chat.
+3) Abra SQL Editor > New query.
+4) Abra o arquivo supabase-setup.sql, copie todo o conteúdo, cole no SQL Editor e clique em Run.
+5) Aguarde a mensagem de sucesso.
+6) Publique os arquivos desta pasta na raiz do repositório GitHub Pages, substituindo os arquivos antigos. Preserve a pasta assets.
+7) Aguarde o GitHub Pages concluir o deploy e atualize o site com Ctrl+F5.
+8) No rodapé, clique em Área administrativa e entre com o e-mail e a senha criados no passo 2.
+9) Clique em Ativar editor de textos para editar textos/artigos. Para imagens do banner, abra Área administrativa, avance até o jogo desejado e clique em Adicionar/trocar imagem do jogo em destaque.
+
+SEGURANÇA
+- A chave sb_publishable_* incluída no JavaScript é pública por definição; a segurança vem das políticas RLS do SQL.
+- Nunca coloque service_role/secret key no site.
+- O e-mail administrador está restrito nas políticas do banco e no painel.
+- A caixa de opiniões permite inserir mensagens, mas visitantes não podem ler as opiniões.
+
+OBSERVAÇÕES
+- O editor antigo salvava somente no navegador. Esta versão sincroniza o conteúdo com Supabase após autenticação.
+- As imagens do banner são enviadas por você pelo painel, para cada jogo. Use imagens que você tenha direito de publicar e limite de 5 MB.
+- As opiniões são gravadas no banco como pendentes. O formulário informa sucesso após o envio.
+- Configure também Authentication > URL Configuration: Site URL com o endereço do GitHub Pages e Redirect URLs com o mesmo endereço (por exemplo, https://SEU-USUARIO.github.io/SEU-REPOSITORIO/**).
