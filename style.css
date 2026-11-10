@@ -96,3 +96,6 @@ dialog h2{padding-right:25px;margin-top:10px}
 .spotlight-art.has-game-image #spotlightArtTitle{display:none}
 .spotlight-art.has-game-image .spotlight-art-kicker,.spotlight-art.has-game-image .spotlight-art-mark{z-index:3}
 .spotlight-game-image{z-index:1}
+
+/* Editor visual de mídias do destaque */
+.media-editor{margin-top:18px;padding:16px;background:#0b101b;border:1px solid #46536b;border-radius:8px}.media-editor[hidden]{display:none}.media-editor h3{margin:0 0 12px;color:#c7ff3d;font-size:20px}.media-editor label{display:block;margin:12px 0;color:#cbd3df;font-size:12px}.media-editor input,.media-editor select{display:block;box-sizing:border-box;width:100%;margin-top:7px;padding:12px;background:#090d16;border:1px solid #46536b;color:#f4f6fb;border-radius:4px}.media-editor-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.media-editor-actions button{padding:11px 15px;border:1px solid #46536b;background:#1a2232;color:#fff;cursor:pointer}.media-editor-actions .primary-button{background:#c7ff3d;color:#101510;border-color:#c7ff3d}.media-editor label[hidden]{display:none}

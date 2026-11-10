@@ -182,7 +182,16 @@
     <div id="adminTools" hidden>
       <p>Você está autenticado. As alterações serão sincronizadas com o site publicado.</p>
       <div class="admin-actions"><button type="button" id="adminEdit">Ativar editor de textos</button><button type="button" id="uploadSpotlight">Adicionar imagem ou vídeo a um jogo</button><button type="button" id="adminLogout">Sair</button></div>
-      <p class="admin-help">Escolha o jogo e depois selecione uma imagem ou cole um link de vídeo do YouTube. Artigos também aceitam imagens pelo editor.</p>
+      <section id="spotlightMediaForm" class="media-editor" hidden>
+        <h3>Adicionar mídia ao jogo</h3>
+        <label>Qual jogo?<select id="mediaGame"><option value="0">Cyberpunk 2077</option><option value="1">The Witcher 3: Wild Hunt</option><option value="2">Forza Horizon 5</option></select></label>
+        <label>Tipo de mídia<select id="mediaKind"><option value="image">Imagem</option><option value="video">Vídeo do YouTube</option></select></label>
+        <label id="mediaFileLabel">Escolha a imagem<input id="mediaFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif"></label>
+        <label id="mediaUrlLabel" hidden>Link do vídeo do YouTube<input id="mediaUrl" type="url" placeholder="https://www.youtube.com/watch?v=..."></label>
+        <div class="media-editor-actions"><button type="button" id="saveSpotlightMedia" class="primary-button">Salvar mídia</button><button type="button" id="cancelSpotlightMedia">Cancelar</button></div>
+        <p id="mediaStatus" role="status" class="admin-help"></p>
+      </section>
+      <p class="admin-help">Adicione uma imagem e um vídeo ao mesmo jogo. O banner alternará automaticamente entre os dois.</p>
     </div>
   </dialog>
   <dialog id="articleDialog">

@@ -114,8 +114,44 @@ async function loadRemoteContent(){const {data,error}=await window.cgSupabase.fr
 }
 $("#adminEdit").addEventListener("click",()=>{setEditing(!editing);adminDialog.close();});
 $("#adminLogout").addEventListener("click",async()=>{await window.cgSupabase.auth.signOut();window.cgAdminSession=null;setEditing(false);$("#adminLoginForm").hidden=false;$("#adminTools").hidden=true;$("#adminPassword").value="";adminStatus.textContent="Sessão encerrada.";});
-function youtubeEmbed(value){try{const u=new URL(value);let id="";if(u.hostname.includes("youtu.be"))id=u.pathname.slice(1);else if(u.hostname.includes("youtube.com")){id=u.searchParams.get("v")||u.pathname.split("/" ).filter(Boolean).pop();}if(!/^[A-Za-z0-9_-]{11}$/.test(id))return null;return "https://www.youtube-nocookie.com/embed/"+id;}catch{return null;}}
-$("#uploadSpotlight").addEventListener("click",async()=>{if(!window.cgSupabase||!window.cgAdminSession){alert("Entre na área administrativa primeiro.");return;}const options=spotlightGames.map((g,i)=>`${i+1}. ${g.title}`).join("\n");const choice=Number(prompt("Qual jogo receberá a mídia?\n"+options+"\nDigite 1, 2 ou 3:"));if(!Number.isInteger(choice)||choice<1||choice>spotlightGames.length)return;const gameIndex=choice-1;const kind=prompt("Digite IMAGEM para enviar uma imagem ou VIDEO para adicionar um link do YouTube:");if(!kind)return;let values={game_index:gameIndex};if(kind.trim().toLowerCase().startsWith("v")){const raw=prompt("Cole o link do vídeo do YouTube:");if(!raw)return;const embed=youtubeEmbed(raw);if(!embed){alert("Link inválido. Use um vídeo normal do YouTube ou youtu.be.");return;}values.video_url=embed;}else{const picker=document.createElement("input");picker.type="file";picker.accept="image/jpeg,image/png,image/webp,image/gif";picker.onchange=async()=>{const file=picker.files[0];if(!file)return;if(file.size>5*1024*1024){alert("A imagem deve ter no máximo 5 MB.");return;}const path=`spotlight/${gameIndex}-${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g,"_")}`;const {error}=await window.cgSupabase.storage.from("site-images").upload(path,file,{upsert:true});if(error){alert("Falha no upload: "+error.message+". Execute o SQL atualizado no Supabase para criar o bucket e as permissões.");return;}values.image_url=window.cgSupabase.storage.from("site-images").getPublicUrl(path).data.publicUrl;await saveSpotlightMedia(values,gameIndex,"imagem");};picker.click();return;}await saveSpotlightMedia(values,gameIndex,"vídeo");adminDialog.close();});
+function youtubeEmbed(value){try{const u=new URL(value.trim());let id="";if(u.hostname==="youtu.be"||u.hostname.endsWith(".youtu.be"))id=u.pathname.split("/").filter(Boolean)[0]||"";else if(u.hostname.includes("youtube.com")||u.hostname.includes("youtube-nocookie.com")){id=u.searchParams.get("v")||u.pathname.split("/").filter(Boolean).pop()||"";}if(!/^[A-Za-z0-9_-]{11}$/.test(id))return null;return "https://www.youtube-nocookie.com/embed/"+id;}catch{return null;}}
+const mediaForm=$("#spotlightMediaForm");
+$("#uploadSpotlight").addEventListener("click",()=>{mediaForm.hidden=false;$("#mediaStatus").textContent="";$("#mediaKind").dispatchEvent(new Event("change"));});
+$("#cancelSpotlightMedia").addEventListener("click",()=>{mediaForm.hidden=true;$("#mediaFile").value="";$("#mediaUrl").value="";});
+$("#mediaKind").addEventListener("change",()=>{const video=$("#mediaKind").value==="video";$("#mediaFileLabel").hidden=video;$("#mediaUrlLabel").hidden=!video;});
+$("#saveSpotlightMedia").addEventListener("click",async()=>{
+ const status=$("#mediaStatus");const gameIndex=Number($("#mediaGame").value);const kind=$("#mediaKind").value;
+ if(!window.cgSupabase||!window.cgAdminSession){status.textContent="Entre na área administrativa novamente.";return;}
+ const button=$("#saveSpotlightMedia");button.disabled=true;status.textContent="Salvando...";
+ try{
+  let patch={};
+  if(kind==="video"){
+   const embed=youtubeEmbed($("#mediaUrl").value);
+   if(!embed){status.textContent="Link inválido. Cole um link completo de vídeo do YouTube.";return;}
+   patch.video_url=embed;
+  }else{
+   const file=$("#mediaFile").files[0];
+   if(!file){status.textContent="Escolha uma imagem antes de salvar.";return;}
+   if(file.size>5*1024*1024){status.textContent="A imagem deve ter no máximo 5 MB.";return;}
+   const path=`spotlight/${gameIndex}-${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g,"_")}`;
+   const {error:uploadError}=await window.cgSupabase.storage.from("site-images").upload(path,file,{upsert:true});
+   if(uploadError)throw new Error("Falha no upload: "+uploadError.message);
+   patch.image_url=window.cgSupabase.storage.from("site-images").getPublicUrl(path).data.publicUrl;
+  }
+  // Busca a linha atual e mescla o campo alterado para nunca apagar a outra mídia.
+  const {data:existing,error:readError}=await window.cgSupabase.from("spotlight_games").select("image_url,video_url").eq("game_index",gameIndex).maybeSingle();
+  if(readError)throw new Error("Não foi possível consultar o jogo: "+readError.message);
+  const merged={game_index:gameIndex,image_url:existing?.image_url??null,video_url:existing?.video_url??null,...patch};
+  const {error:saveError}=await window.cgSupabase.from("spotlight_games").upsert(merged,{onConflict:"game_index"});
+  if(saveError)throw new Error("Não foi possível salvar no Supabase: "+saveError.message);
+  if(patch.image_url)spotlightGames[gameIndex].imageUrl=patch.image_url;
+  if(patch.video_url)spotlightGames[gameIndex].videoUrl=patch.video_url;
+  spotlightIndex=gameIndex;showSpotlight(gameIndex);restartSpotlight();
+  status.textContent="Mídia salva! O banner alternará entre imagem e vídeo quando os dois estiverem cadastrados.";
+  $("#mediaFile").value="";$("#mediaUrl").value="";
+ }catch(err){status.textContent=err.message||"Ocorreu um erro ao salvar.";}
+ finally{button.disabled=false;}
+});
 async function saveSpotlightMedia(values,index,label){const {error}=await window.cgSupabase.from("spotlight_games").upsert(values);if(error){alert("Não foi possível salvar: "+error.message+". Execute o SQL atualizado no Supabase.");return;}if(values.image_url)spotlightGames[index].imageUrl=values.image_url;if(values.video_url)spotlightGames[index].videoUrl=values.video_url;showSpotlight(spotlightIndex);alert(""+label.charAt(0).toUpperCase()+label.slice(1)+" salvo para "+spotlightGames[index].title+"!");adminDialog.close();}
 async function loadPublicContent(){if(!window.cgSupabase)return;const {data}=await window.cgSupabase.from("site_content").select("payload").eq("id",1).maybeSingle();if(data?.payload){const payload=data.payload;if(payload.content)Object.entries(payload.content).forEach(([k,v])=>{const el=$(`[data-editable="${CSS.escape(k)}"]`);if(el)el.innerHTML=v;});if(Array.isArray(payload.posts)){posts=payload.posts;renderPosts();}}const {data:games}=await window.cgSupabase.from("spotlight_games").select("game_index,image_url,video_url").order("game_index");if(games)games.forEach(row=>{if(spotlightGames[row.game_index]){spotlightGames[row.game_index].imageUrl=row.image_url;spotlightGames[row.game_index].videoUrl=row.video_url;}});showSpotlight(spotlightIndex);}
 (async()=>{if(!window.cgSupabase)return;await loadPublicContent();const {data}=await window.cgSupabase.auth.getSession();if(data?.session?.user?.email?.toLowerCase()===ADMIN_EMAIL){window.cgAdminSession=data.session;await loadRemoteContent();}})();
