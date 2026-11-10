@@ -116,9 +116,20 @@ $("#adminEdit").addEventListener("click",()=>{setEditing(!editing);adminDialog.c
 $("#adminLogout").addEventListener("click",async()=>{await window.cgSupabase.auth.signOut();window.cgAdminSession=null;setEditing(false);$("#adminLoginForm").hidden=false;$("#adminTools").hidden=true;$("#adminPassword").value="";adminStatus.textContent="Sessão encerrada.";});
 function youtubeEmbed(value){try{const u=new URL(value.trim());let id="";if(u.hostname==="youtu.be"||u.hostname.endsWith(".youtu.be"))id=u.pathname.split("/").filter(Boolean)[0]||"";else if(u.hostname.includes("youtube.com")||u.hostname.includes("youtube-nocookie.com")){id=u.searchParams.get("v")||u.pathname.split("/").filter(Boolean).pop()||"";}if(!/^[A-Za-z0-9_-]{11}$/.test(id))return null;return "https://www.youtube-nocookie.com/embed/"+id;}catch{return null;}}
 const mediaForm=$("#spotlightMediaForm");
-$("#uploadSpotlight").addEventListener("click",()=>{mediaForm.hidden=false;$("#mediaStatus").textContent="";$("#mediaKind").dispatchEvent(new Event("change"));});
+$("#uploadSpotlight").addEventListener("click",()=>{mediaForm.hidden=false;$("#mediaStatus").textContent="";updateMediaFields();});
 $("#cancelSpotlightMedia").addEventListener("click",()=>{mediaForm.hidden=true;$("#mediaFile").value="";$("#mediaUrl").value="";});
-$("#mediaKind").addEventListener("change",()=>{const video=$("#mediaKind").value==="video";$("#mediaFileLabel").hidden=video;$("#mediaUrlLabel").hidden=!video;});
+function updateMediaFields(){
+  const video=$("#mediaKind").value==="video";
+  const fileLabel=$("#mediaFileLabel"), urlLabel=$("#mediaUrlLabel");
+  // Força a troca visual dos campos mesmo se algum CSS sobrescrever o atributo hidden.
+  fileLabel.hidden=video;
+  urlLabel.hidden=!video;
+  fileLabel.style.display=video?"none":"block";
+  urlLabel.style.display=video?"block":"none";
+  $("#mediaFile").disabled=video;
+  $("#mediaUrl").disabled=!video;
+}
+$("#mediaKind").addEventListener("change",updateMediaFields);
 $("#saveSpotlightMedia").addEventListener("click",async()=>{
  const status=$("#mediaStatus");const gameIndex=Number($("#mediaGame").value);const kind=$("#mediaKind").value;
  if(!window.cgSupabase||!window.cgAdminSession){status.textContent="Entre na área administrativa novamente.";return;}
